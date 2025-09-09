@@ -17,7 +17,7 @@ body {
 }
 
 .container {
-    max-width: 1024px;
+    max-width: 1200px; /*sep 9 increased from 1024*/
     margin: 0 auto;
 }
 
@@ -29,7 +29,7 @@ body {
 
 .main-title {
     font-size: 4rem;
-    font-weight: bold;
+    font-weight: lighter;
     color: #1e3a8a;
     letter-spacing: 0.1em;
     margin-bottom: 32px;
@@ -41,6 +41,7 @@ body {
     display: flex;
     justify-content: center;
     margin-bottom: 0;
+    margin-left: 580px;
 }
 
 .tab-group {
@@ -77,29 +78,35 @@ body {
 .main-card {
     background: #ffdc6b;
     border: 0;
-    border-radius: 25px;
+    border-radius: 25px 0 25px 25px;
     padding: 32px;
     min-height: 500px;
     margin-top: -33px;
+    /*Sep 9 making space for trash sprite*/
+    display: block;
 }
 
 .date-display {
     font-size: 1.125rem;
     font-weight: bold;
-    color: #1e3a8a;
+    color: #ff7e2e;
     margin-bottom: 24px;
 }
 
 /* Section styles */
 .section {
     margin-bottom: 32px;
+    margin-top: -40px;
+    margin-left: 0px;
+    padding: 20px;
 }
 
 .section-title {
-    font-size: 1.25rem;
+    font-size: 0.8rem;
     font-weight: bold;
     color: #1e3a8a;
     margin-bottom: 16px;
+    margin-top: 60px;
 }
 
 .overview-title {
@@ -113,7 +120,7 @@ body {
 .waste-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+
 }
 
 .waste-item {
@@ -122,13 +129,15 @@ body {
     align-items: center;
     background-color: #84def4;
     border: 2px solid #1e3a8a;
-    padding: 16px;
+    padding: 2px;
+    min-width: 500px;
 }
 
 .waste-item-text {
     font-weight: bold;
     color: #1e3a8a;
     flex: 1;
+    text-align: center;
 }
 
 .waste-item-date {
@@ -140,9 +149,10 @@ body {
 .empty-state {
     background-color: #84def4;
     border: 3px solid #1c4daf;
-    padding: 16px;
+    padding: 20px;
     text-align: center;
     color: #1c4daf;
+    min-width: 500px;
 }
 
 /* Form styles */
@@ -160,7 +170,7 @@ body {
     background: #84def4;
     font-weight: bold;
     font-family: 'Press Start 2P', monospace;
-    box-shadow: inset 4px 4px 0px rgba(30, 64, 175, 0.2);
+    min-width: 500px; /*sep 9 minimum width not too small*/
 }
 
 .waste-input::placeholder {
@@ -256,7 +266,7 @@ body {
     }
     
     .main-title {
-        font-size: 2.5rem;
+        font-size: 1rem;
     }
     
     .tab-button {
@@ -300,6 +310,7 @@ body {
 }
 
 /*NEW UDPATE SEP 8 */
+/*Improved action notifications*/
 .notification {
     position: fixed;
     bottom: 20px;
@@ -346,3 +357,42 @@ body {
         opacity: 1;
     }
 }
+
+/*Sep 9 New area for trash can sprite*/
+.trash-sprite-wrapper{
+    float: right;
+    margin-top: -400px;
+    margin-right: 60px;
+}
+
+.trash-can-sprite {
+    height: 350px;
+    width: auto;
+    display: block;
+}
+
+.waste-section{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0px;
+    margin-bottom: 32px;
+    flex: 1;
+    max-width: 70%; /*sep 9*/
+}
+
+/*makes layout compatable with smaller screens*/
+@media (max-width: 768px) {
+    .main-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .trash-can-sprite {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 24px;
+    }
+}
+
