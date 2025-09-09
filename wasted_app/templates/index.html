@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What A Waste - Waste Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="main-title">WHAT A WASTE</h1>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab-group">
+                    <button class="tab-button active" onclick="switchTab('track')">
+                        TODAY'S ACTIVITY
+                    </button>
+                    <button class="tab-button" onclick="switchTab('overview')">
+                        OVERVIEW
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-card">
+            <div class="date-display" id="dateDisplay"></div>
+
+            <!-- Track Tab Content -->
+            <div id="trackTab">
+                <!-- Current Waste List -->
+                <div class="section">
+                    <h3 class="section-title">CURRENT WASTE</h3>
+                    <div class="waste-list" id="todayWasteList">
+                        <div class="empty-state">NO WASTE TRACKED TODAY</div>
+                    </div>
+                </div>
+
+                <!-- Add Waste Section -->
+                <div class="section">
+                    <h3 class="section-title">ADD WASTE</h3>
+                    <form class="add-waste-form" onsubmit="addWaste(event)">
+                        <input 
+                            type="text" 
+                            class="waste-input" 
+                            id="wasteInput"
+                            placeholder="ENTER WASTE ITEM"
+                            autocomplete="off"
+                        >
+                        <button type="submit" class="btn btn-primary" id="addButton">
+                            <span class="icon-plus"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Overview Tab Content -->
+            <div id="overviewTab" class="hidden">
+                <h3 class="overview-title">ALL WASTE ENTRIES</h3>
+                <div class="overview-stats" id="totalStats">TOTAL ENTRIES: 0</div>
+                
+                <div class="scrollable-list" id="allWasteList">
+                    <div class="empty-state">No waste entries yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
