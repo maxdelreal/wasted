@@ -30,22 +30,27 @@ body {
 .title-container {
     display: flex;
     align-items: center;
-    gap: 0.89em;
+    gap: -0.5em;
 }
 
 .logo {
     width: 5em;
     height: auto;
     margin-bottom: 40px;
+    transform: rotate(-15deg);
+    animation: tilt-shaking 2s infinite;
 }
 
 .main-title {
     font-size: 3rem;
     font-weight: lighter;
-    color: #1e3a8a;
+    color: #0041f2;
     letter-spacing: 0.1em;
     margin-bottom: 32px;
-    text-shadow: 4px 4px 0px #1e40af, 8px 8px 0px rgba(30, 64, 175, 0.3);
+    text-shadow: 4px 4px 0px #2354f3, 8px 8px 0px rgba(63, 108, 255, 0.3);
+    -webkit-text-stroke-width: 2.5px;
+    -webkit-text-stroke-color: rgb(255, 255, 255);
+    
 }
 .trash-can {
     max-width: 50px;
@@ -72,10 +77,10 @@ body {
     font-size: 1.125rem;
     font-weight: bold;
     font-family: 'Press Start 2P', monospace;
-    border: 2px solid #fde68a;
-    background-color: rgb(255, 245, 203);
+    border: 0px solid #fff1aa;
+    background-color: rgb(255, 242, 192);
     border-radius: 15px 15px 0px 0px;
-    color: #c3c266;
+    color: #fce343;
     cursor: pointer;
     border-bottom:none;
     transition: all 0.3s ease;
@@ -106,7 +111,7 @@ body {
 }
 
 .date-display {
-    font-size: 1.125rem;
+    font-size: 1.65rem;
     font-weight: bold;
     color: #ff7e2e;
     margin-bottom: 24px;
@@ -121,7 +126,7 @@ body {
 }
 
 .section-title {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #1e3a8a;
     margin-bottom: 16px;
@@ -177,7 +182,7 @@ body {
 /* Form styles */
 .add-waste-form {
     display: flex;
-    gap: 8px;
+    gap: 0px;
     align-items: stretch;
 }
 
@@ -215,14 +220,14 @@ body {
 }
 
 .btn-primary {
-    background-color: #10b981;
+    background-color: #10b929;
     color: white;
-    border-color: #047857;
+    border-color: #006d07;
     padding: 16px 24px;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: #059669;
+    background-color: #17a728;
 }
 
 .btn-primary:disabled {
@@ -250,6 +255,7 @@ body {
     font-size: 1.125rem;
     font-weight: bold;
     margin-bottom: 16px;
+    color: #952013;
 }
 
 .scrollable-list {
@@ -274,7 +280,7 @@ body {
 }
 
 .icon-trash::before { 
-    content: '🗑️'; 
+    content: '➖'; 
     font-size: 14px;
 }
 
@@ -293,6 +299,10 @@ body {
         font-size: 1rem;
     }
     
+    .logo {
+        transform: rotate();
+    }
+
     .main-card {
         padding: 16px;
     }
@@ -349,7 +359,7 @@ body {
 }
 
 .notification-success {
-    background-color: #10b981;
+    background-color: #35b33d;
     border-color: #047857;
     box-shadow: 4px 4px 0px rgba(4, 120, 87, 0.5);
 }
@@ -376,6 +386,13 @@ body {
         opacity: 1;
     }
 }
+@keyframes tilt-shaking {
+    0% { transform: rotate(2deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(2eg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(1deg); }
+  }
 
 /*Sep 9 New area for trash can sprite*/
 .trash-sprite-wrapper{
