@@ -29,6 +29,14 @@ body {
 
 .title-container {
     display: flex;
+    align-items: center;
+    gap: 0.89em;
+}
+
+.logo {
+    width: 5em;
+    height: auto;
+    margin-bottom: 40px;
 }
 
 .main-title {
