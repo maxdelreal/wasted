@@ -1,1 +1,4 @@
 for notes
+- add professor to the github as an editor: mpeirari.
+
+-going to start the sql 

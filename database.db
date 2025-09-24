@@ -1,1 +1,30 @@
-#For SQLite databse
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Date
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    user_id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String, nullable=False)
+    days = relationship("Day", back_populates="user")
+
+class Day(Base):
+    __tablename__ = 'days'
+    day_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('users.user_id'), nullable=False)
+    date = Column(Date, nullable=False)
+    user = relationship("User", back_populates="days")
+    items = relationship("Item", back_populates="day")
+
+class Item(Base):
+    __tablename__ = 'items'
+    item_id = Column(Integer, primary_key=True, autoincrement=True)
+    day_id = Column(Integer, ForeignKey('days.day_id'), nullable=False)
+    item_name = Column(String, nullable=False)
+    day = relationship("Day", back_populates="items")
+
+# Example engine creation (update 'sqlite:///wasteweeklog.db' with your database path)
+engine = create_engine('sqlite:///wasteweeklog.db')
+Base.metadata.create_all(engine)

@@ -1,8 +1,11 @@
 # turns folder into a python package
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
 
 #Creating database w SQLAlchemy // remember to install sqalchemy through pip "pip install flask-sqlalchemy flask-migrate"
 db = SQLAlchemy()
+
 
 def create_app():
     app = Flask(__name__)
