@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Waste Tracker App initialized');
     
     updateDateDisplay();
+    loadWasteEntries();
     renderTodayWaste();
     renderAllWaste();
     updateAddButton();
@@ -84,7 +85,7 @@ function updateDateDisplay() {
 /**
  * Add a new waste item
  */
-function addWaste(event) {
+ async function addWaste(event) {
     event.preventDefault();
     
     const input = document.getElementById('wasteInput');
@@ -100,29 +101,35 @@ function addWaste(event) {
         return;
     }
     
-    const newEntry = {
-        id: Date.now().toString(),
-        item: wasteItem.toUpperCase(),
-        date: new Date().toLocaleDateString(),
-        timestamp: Date.now()
-    };
-    
-    wasteEntries.push(newEntry);
-    input.value = '';
-    
-    renderTodayWaste();
-    updateAddButton();
-    
-    showAlert(`Added "${newEntry.item}" to your waste list`, 'success');
-    
-    console.log('Added waste item:', newEntry);
-    // Trigger trash can animation
-    const trashCan = document.querySelector('.trash-can-sprite');
-    if (trashCan) {
-        trashCan.classList.add('animate');
-        trashCan.addEventListener('animationend', () => {
-            trashCan.classList.remove('animate');
-        }, { once: true });
+    try {
+        const response = await fetch('/api/waste', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ item: wasteItem })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to add waste item');
+        }
+        
+        const newEntry = await response.json();
+        
+        // Add to local array and re-render
+        wasteEntries.push(newEntry);
+        input.value = '';
+        
+        renderTodayWaste();
+        updateAddButton();
+        
+        showAlert(`Added "${newEntry.item}" to your waste list`, 'success');
+        
+        console.log('Added waste item:', newEntry);
+        
+    } catch (error) {
+        console.error('Error adding waste:', error);
+        showAlert('Failed to add waste item', 'error');
     }
 }
 
@@ -158,8 +165,18 @@ function renderTodayWaste() {
         return;
     }
     
-    const today = new Date().toLocaleDateString();
-    const todayEntries = wasteEntries.filter(entry => entry.date === today);
+    const today = new Date();
+    const todayString = today.toLocaleDateString();
+    const todayStringPadded = today.toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric'
+    });
+
+    //check both formats for safety
+    const todayEntries = wasteEntries.filter(entry => 
+        entry.date === todayString || entry.date === todayStringPadded
+    );
     
     if (todayEntries.length === 0) {
         container.innerHTML = '<div class="empty-state">NO WASTE TRACKED TODAY</div>';
@@ -329,3 +346,30 @@ if (typeof module !== 'undefined' && module.exports) {
         clearAllEntries
     };
 }
+
+// sep 30 function to load waste entries from the server 
+
+/**
+ * Load waste entries from the server
+ */
+ async function loadWasteEntries() {
+    try {
+        const response = await fetch('/api/waste');
+        
+        if (!response.ok) {
+            throw new Error('Failed to load waste entries');
+        }
+        
+        wasteEntries = await response.json();
+        
+        renderTodayWaste();
+        renderAllWaste();
+        
+        console.log('Loaded waste entries:', wasteEntries.length);
+        
+    } catch (error) {
+        console.error('Error loading waste entries:', error);
+        showAlert('Failed to load waste entries', 'error');
+    }
+}
+
