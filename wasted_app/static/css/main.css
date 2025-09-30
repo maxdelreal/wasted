@@ -11,9 +11,10 @@
 
 body {
     font-family: 'Press Start 2P', monospace;
-    background:#a0f2f6 0%;
+    background:#b7e8ff 0%;
     min-height: 100vh;
     padding: 24px;
+
 }
 
 .container {
@@ -27,13 +28,37 @@ body {
     margin-bottom: 32px;
 }
 
+.title-container {
+    display: flex;
+    align-items: center;
+    gap: -0.5em;
+}
+
+.logo {
+    width: 5em;
+    height: auto;
+    margin-bottom: 40px;
+    transform: rotate(-15deg);
+    animation: tilt-shaking 2s infinite;
+}
+
 .main-title {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: lighter;
-    color: #1e3a8a;
+    color: #0041f2;
     letter-spacing: 0.1em;
     margin-bottom: 32px;
-    text-shadow: 4px 4px 0px #1e40af, 8px 8px 0px rgba(30, 64, 175, 0.3);
+    text-shadow: 4px 4px 0px #2354f3, 8px 8px 0px rgba(63, 108, 255, 0.3);
+    -webkit-text-stroke-width: 2.5px;
+    -webkit-text-stroke-color: rgb(255, 255, 255);
+    
+}
+.trash-can {
+    max-width: 50px;
+    height: auto;   
+    display: block; 
+    margin: 0;  
+    align-items:start;
 }
 
 /* Tab styles */
@@ -53,10 +78,10 @@ body {
     font-size: 1.125rem;
     font-weight: bold;
     font-family: 'Press Start 2P', monospace;
-    border: 2px solid #fde68a;
-    background-color: rgb(255, 245, 203);
+    border: 0px solid #fff1aa;
+    background-color: rgb(255, 242, 192);
     border-radius: 15px 15px 0px 0px;
-    color: #c3c266;
+    color: #fce343;
     cursor: pointer;
     border-bottom:none;
     transition: all 0.3s ease;
@@ -87,7 +112,7 @@ body {
 }
 
 .date-display {
-    font-size: 1.125rem;
+    font-size: 1.65rem;
     font-weight: bold;
     color: #ff7e2e;
     margin-bottom: 24px;
@@ -102,7 +127,7 @@ body {
 }
 
 .section-title {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #1e3a8a;
     margin-bottom: 16px;
@@ -127,10 +152,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #84def4;
-    border: 2px solid #1e3a8a;
+    background-color: #b7e8ff;
+    border: 3px solid #1e3a8a;
     padding: 2px;
     min-width: 500px;
+    
 }
 
 .waste-item-text {
@@ -147,7 +173,7 @@ body {
 }
 
 .empty-state {
-    background-color: #84def4;
+    background-color: #b7e8ff;
     border: 3px solid #1c4daf;
     padding: 20px;
     text-align: center;
@@ -158,7 +184,7 @@ body {
 /* Form styles */
 .add-waste-form {
     display: flex;
-    gap: 8px;
+    gap: 0px;
     align-items: stretch;
 }
 
@@ -166,8 +192,8 @@ body {
     flex: 1;
     font-size: 0.8rem;
     padding: 16px;
-    border: 4px solid #1e3a8a;
-    background: #84def4;
+    border: 3px solid #1e3a8a;
+    background: #b7e8ff;
     font-weight: bold;
     font-family: 'Press Start 2P', monospace;
     min-width: 500px; /*sep 9 minimum width not too small*/
@@ -196,14 +222,14 @@ body {
 }
 
 .btn-primary {
-    background-color: #10b981;
+    background-color: #10b929;
     color: white;
-    border-color: #047857;
+    border-color: #006d07;
     padding: 16px 24px;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: #059669;
+    background-color: #17a728;
 }
 
 .btn-primary:disabled {
@@ -231,6 +257,7 @@ body {
     font-size: 1.125rem;
     font-weight: bold;
     margin-bottom: 16px;
+    color: #952013;
 }
 
 .scrollable-list {
@@ -246,16 +273,16 @@ body {
 /* Icon styles using Unicode symbols */
 .icon-plus::before { 
     content: '➕'; 
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .icon-minus::before { 
     content: '➖'; 
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .icon-trash::before { 
-    content: '🗑️'; 
+    content: '➖'; 
     font-size: 14px;
 }
 
@@ -274,6 +301,10 @@ body {
         font-size: 1rem;
     }
     
+    .logo {
+        transform: rotate();
+    }
+
     .main-card {
         padding: 16px;
     }
@@ -330,9 +361,10 @@ body {
 }
 
 .notification-success {
-    background-color: #10b981;
-    border-color: #047857;
+    background-color: #bdd619;
+    border-color: #46b737;
     box-shadow: 4px 4px 0px rgba(4, 120, 87, 0.5);
+    color: #1c4daf;
 }
 
 .notification-error {
@@ -357,12 +389,20 @@ body {
         opacity: 1;
     }
 }
+@keyframes tilt-shaking {
+    0% { transform: rotate(2deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(2eg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(1deg); }
+  }
 
 /*Sep 9 New area for trash can sprite*/
 .trash-sprite-wrapper{
     float: right;
     margin-top: -400px;
     margin-right: 60px;
+    position: relative;
 }
 
 .trash-can-sprite {
@@ -371,6 +411,15 @@ body {
     display: block;
 }
 
+/* Bounce animation for the trash can */
+@keyframes bounce-once {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-30px); }
+}
+
+.trash-can-sprite.animate {
+  animation: bounce-once 0.8s ease;
+}
 .waste-section{
     display: flex;
     flex-direction: column;

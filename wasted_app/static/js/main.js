@@ -116,6 +116,14 @@ function addWaste(event) {
     showAlert(`Added "${newEntry.item}" to your waste list`, 'success');
     
     console.log('Added waste item:', newEntry);
+    // Trigger trash can animation
+    const trashCan = document.querySelector('.trash-can-sprite');
+    if (trashCan) {
+        trashCan.classList.add('animate');
+        trashCan.addEventListener('animationend', () => {
+            trashCan.classList.remove('animate');
+        }, { once: true });
+    }
 }
 
 /**
