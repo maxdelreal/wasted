@@ -199,6 +199,28 @@ body {
     min-width: 500px; /*sep 9 minimum width not too small*/
 }
 
+
+.login-input{
+    font-size: 0.8rem;
+    padding: 16px;
+    border: 3px solid #1e3a8a;
+    background: #b7e8ff;
+    font-weight: bold;
+    font-family: 'Press Start 2P', monospace;
+    min-width: 300px; /*sep 9 minimum width not too small*/
+}
+
+.login-main-card{
+    background: #ffdc6b;
+    border: 0;
+    border-radius: 25px 25px 25px 25px;
+    padding: 32px;
+    min-height: 500px;
+    margin-top: -33px;
+    /*Sep 9 making space for trash sprite*/
+    display: block;
+}
+
 .waste-input::placeholder {
     color: #9ca3af;
 }
