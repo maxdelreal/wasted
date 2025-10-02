@@ -136,23 +136,42 @@ function updateDateDisplay() {
 /**
  * Delete a waste entry
  */
-function deleteWaste(id) {
-    const entryToDelete = wasteEntries.find(entry => entry.id === id);
+ async function deleteWaste(id) {
+    // Convert id to number for comparison
+    const numericId = parseInt(id);
+    const entryToDelete = wasteEntries.find(entry => entry.id === numericId);
     
     if (!entryToDelete) {
         console.error('Entry not found:', id);
+        showAlert('Entry not found', 'error');
         return;
     }
     
-    
-        wasteEntries = wasteEntries.filter(entry => entry.id !== id);
+    try {
+        const response = await fetch(`/api/waste/${numericId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to delete waste item');
+        }
+        
+        // Remove from local array only after successful deletion
+        wasteEntries = wasteEntries.filter(entry => entry.id !== numericId);
         renderTodayWaste();
         renderAllWaste();
         
         showAlert('Entry deleted successfully', 'success');
         
         console.log('Deleted waste item:', entryToDelete);
-    
+        
+    } catch (error) {
+        console.error('Error deleting waste:', error);
+        showAlert('Failed to delete waste item', 'error');
+    }
 }
 
 /**
