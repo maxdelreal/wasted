@@ -39,36 +39,35 @@
 
             <!-- Track Tab Content -->
             <div id="trackTab">
-                <div class="waste-section">
-                        <!-- Current Waste List -->
-                        <div class="section">
-                            <h3 class="section-title">CURRENT WASTE</h3>
-                            <div class="waste-list" id="todayWasteList">
-                                <div class="empty-state">NO WASTE TRACKED TODAY</div>
-                            </div>
-                        </div>
-                        <div class="section">
-                            <!-- Add Waste Section -->
-                            <h3 class="section-title">ADD WASTE</h3>
-                            <form class="add-waste-form" onsubmit="addWaste(event)">
-                                <input 
-                                    type="text" 
-                                    class="waste-input" 
-                                    id="wasteInput"
-                                    placeholder="ENTER WASTE ITEM"
-                                    autocomplete="off"
-                                >
-                                <button type="submit" class="btn btn-primary" id="addButton">
-                                    <span class="icon-plus"></span>
-                                </button>
-                            </form>
-                        </div> 
+                <div class="content-row">
+                  <div class="waste-section">
+                    <!-- Current Waste List -->
+                    <div class="section">
+                      <h3 class="section-title">CURRENT WASTE</h3>
+                      <div class="waste-list" id="todayWasteList">
+                        <div class="empty-state">NO WASTE TRACKED TODAY</div>
+                      </div>
                     </div>
-                    <!-- Trash Can Picture-->
-                        <div class="trash-sprite-wrapper">
-                            <img src="{{ url_for('static', filename='pic/trashcan-sprite.png') }}" alt="Recycling Bin" class="trash-can-sprite">
-                        </div>
+              
+                    <!-- Add Waste Section -->
+                    <div class="section">
+                      <h3 class="section-title">ADD WASTE</h3>
+                      <form class="add-waste-form" onsubmit="addWaste(event)">
+                        <input type="text" class="waste-input" id="wasteInput" placeholder="ENTER WASTE ITEM" autocomplete="off">
+                        <button type="submit" class="btn btn-primary" id="addButton">
+                          <span class="icon-plus"></span>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+              
+                  <!-- Trash Can Picture-->
+                  <div class="trash-sprite-wrapper">
+                    <img src="{{ url_for('static', filename='pic/trashcan-sprite.png') }}" alt="Recycling Bin" class="trash-can-sprite">
+                  </div>
                 </div>
+              </div>
+              
                 <!-- Overview Tab Content -->
                     <div id="overviewTab" class="hidden">
                         <h3 class="overview-title">ALL WASTE ENTRIES</h3>
