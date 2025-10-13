@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 from wasted_app import db
 from wasted_app.models import User, WasteEntry
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 main = Blueprint('main', __name__)
 
@@ -119,3 +119,45 @@ def delete_waste(waste_id):
     db.session.commit()
     
     return jsonify({'message': 'Entry deleted'})
+
+# weekly waste sorting
+@main.route('/api/waste/weekly', methods=['GET'])
+@login_required
+def get_weekly_waste():
+    # Get week_offset parameter (default to 0 for current week)
+    week_offset = request.args.get('week_offset', 0, type=int)
+    
+    # Calculate the start of the current week (Monday)
+    today = date.today()
+    days_since_monday = today.weekday()  # Monday = 0, Sunday = 6
+    current_week_start = today - timedelta(days=days_since_monday)
+    
+    # Apply week offset
+    week_start = current_week_start + timedelta(weeks=week_offset)
+    week_end = week_start + timedelta(days=6)  # Sunday
+    
+    # Query entries for this user within the week range
+    entries = WasteEntry.query.filter(
+        WasteEntry.user_id == current_user.id,
+        WasteEntry.date_created >= week_start,
+        WasteEntry.date_created <= week_end
+    ).order_by(WasteEntry.timestamp.desc()).all()
+    
+    # Group entries by day of week
+    days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    grouped_entries = {day: [] for day in days_of_week}
+    
+    for entry in entries:
+        day_name = days_of_week[entry.date_created.weekday()]
+        grouped_entries[day_name].append({
+            'id': entry.id,
+            'item': entry.item_name,
+            'date': entry.date_created.strftime('%m/%d/%Y'),
+            'timestamp': int(entry.timestamp.timestamp() * 1000)
+        })
+    
+    return jsonify({
+        'week_start': week_start.strftime('%m/%d/%Y'),
+        'week_end': week_end.strftime('%m/%d/%Y'),
+        'days': grouped_entries
+    })
