@@ -69,14 +69,18 @@
               </div>
               
                 <!-- Overview Tab Content -->
-                    <div id="overviewTab" class="hidden">
-                        <h3 class="overview-title">ALL WASTE ENTRIES</h3>
-                        <div class="overview-stats" id="totalStats">TOTAL ENTRIES: 0</div>
-                        
-                        <div class="scrollable-list" id="allWasteList">
-                            <div class="empty-state">No waste entries yet</div>
-                        </div>
+                  <div id="overviewTab" class="hidden">
+                    <h3 class="overview-title">ALL WASTE ENTRIES</h3>
+                    <div class="week-navigation">
+                        <button class="btn btn-primary" onclick="navigateWeek(-1)">← PREVIOUS WEEK</button>
+                        <div class="overview-stats" id="totalStats">WEEK OF ...</div>
+                        <button class="btn btn-primary" onclick="navigateWeek(1)">NEXT WEEK →</button>
                     </div>
+                    
+                    <div class="scrollable-list" id="allWasteList">
+                        <div class="empty-state">No waste entries yet</div>
+                    </div>
+                </div>
             </div>
             
 

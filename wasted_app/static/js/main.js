@@ -1,6 +1,8 @@
 // Global state
 let wasteEntries = [];
 let currentTab = 'track';
+let weeklyData = null;
+let currentWeekOffset = 0; // 0 = current week, -1 = last week and so on
 
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -9,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateDateDisplay();
     loadWasteEntries();
     renderTodayWaste();
-    renderAllWaste();
+    loadWeeklyWaste(0);
     updateAddButton();
     
     // Add input event listener for real-time validation
@@ -57,7 +59,7 @@ function switchTab(tab) {
     } else {
         trackTab.classList.add('hidden');
         overviewTab.classList.remove('hidden');
-        renderAllWaste(); // Refresh the overview when switching
+        loadWeeklyWaste(currentWeekOffset); // reloads weekly view each time tab is switched
     }
     
     currentTab = tab;
@@ -172,7 +174,7 @@ function updateDateDisplay() {
         // Remove from local array only after successful deletion
         wasteEntries = wasteEntries.filter(entry => entry.id !== numericId);
         renderTodayWaste();
-        renderAllWaste();
+        loadWeeklyWaste(currentWeekOffset);
         
         showAlert('Entry deleted successfully', 'success');
         
@@ -224,10 +226,9 @@ function renderTodayWaste() {
     `).join('');
 }
 
-/**
- * Render all waste entries in overview
- */
-function renderAllWaste() {
+// Oct 14 renders weekly waste entries by day
+
+ function renderWeeklyWaste() {
     const container = document.getElementById('allWasteList');
     const statsContainer = document.getElementById('totalStats');
     
@@ -236,26 +237,52 @@ function renderAllWaste() {
         return;
     }
     
-    statsContainer.textContent = `TOTAL ENTRIES: ${wasteEntries.length}`;
-    
-    if (wasteEntries.length === 0) {
-        container.innerHTML = '<div class="empty-state">No waste entries yet</div>';
+    if (!weeklyData) {
+        container.innerHTML = '<div class="empty-state">Loading weekly data...</div>';
         return;
     }
     
-    const sortedEntries = [...wasteEntries].sort((a, b) => b.timestamp - a.timestamp);
+    // Update stats to show week range
+    statsContainer.textContent = `WEEK OF ${weeklyData.week_start} - ${weeklyData.week_end}`;
     
-    container.innerHTML = sortedEntries.map(entry => `
-        <div class="waste-item">
-            <div>
-                <div class="waste-item-text">${escapeHtml(entry.item)}</div>
-                <div class="waste-item-date">${escapeHtml(entry.date)}</div>
-            </div>
-            <button class="btn btn-danger btn-sm" onclick="deleteWaste('${entry.id}')" title="Delete ${escapeHtml(entry.item)}">
-                <span class="icon-trash"></span>
-            </button>
-        </div>
-    `).join('');
+    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    let hasAnyEntries = false;
+    
+    // Build HTML for each day
+    let html = '';
+    daysOfWeek.forEach(day => {
+        const entries = weeklyData.days[day];
+        
+        if (entries.length > 0) {
+            hasAnyEntries = true;
+            html += `<div class="day-section">
+                <h4 class="day-header">${day}</h4>`;
+            
+            entries.forEach(entry => {
+                html += `
+                    <div class="waste-item">
+                        <div class="waste-item-text">${escapeHtml(entry.item)}</div>
+                        <button class="btn btn-danger btn-sm" onclick="deleteWaste('${entry.id}')" title="Delete ${escapeHtml(entry.item)}">
+                            <span class="icon-trash"></span>
+                        </button>
+                    </div>`;
+            });
+            
+            html += '</div>';
+        } else {
+            // Show empty day
+            html += `<div class="day-section">
+                <h4 class="day-header">${day}</h4>
+                <div class="empty-state">Empty</div>
+            </div>`;
+        }
+    });
+    
+    if (!hasAnyEntries) {
+        container.innerHTML = '<div class="empty-state">No waste entries this week</div>';
+    } else {
+        container.innerHTML = html;
+    }
 }
 
 /**
@@ -402,3 +429,31 @@ if (typeof module !== 'undefined' && module.exports) {
     }
 }
 
+// Oct 14 , function to load weekly waste from server
+ async function loadWeeklyWaste(weekOffset = 0) {
+    try {
+        const response = await fetch(`/api/waste/weekly?week_offset=${weekOffset}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to load weekly waste data');
+        }
+        
+        weeklyData = await response.json();
+        currentWeekOffset = weekOffset;
+        
+        renderWeeklyWaste();
+        
+        console.log('Loaded weekly data:', weeklyData);
+        
+    } catch (error) {
+        console.error('Error loading weekly waste:', error);
+        showAlert('Failed to load weekly data', 'error');
+    }
+}
+
+// oct 14, navigate between weeks without having to use console 
+
+ function navigateWeek(direction) {
+    const newOffset = currentWeekOffset + direction;
+    loadWeeklyWaste(newOffset);
+}

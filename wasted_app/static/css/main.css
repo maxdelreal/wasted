@@ -480,3 +480,21 @@ body {
 }
 
 
+/* week navigation style*/
+.week-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.week-navigation .overview-stats {
+    flex: 1;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.week-navigation .btn {
+    white-space: nowrap;
+}
