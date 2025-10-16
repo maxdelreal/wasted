@@ -283,6 +283,8 @@ function renderTodayWaste() {
     } else {
         container.innerHTML = html;
     }
+    
+    createWasteChart(weeklyData);
 }
 
 /**
@@ -419,7 +421,6 @@ if (typeof module !== 'undefined' && module.exports) {
         wasteEntries = await response.json();
         
         renderTodayWaste();
-        renderAllWaste();
         
         console.log('Loaded waste entries:', wasteEntries.length);
         
@@ -457,3 +458,76 @@ if (typeof module !== 'undefined' && module.exports) {
     const newOffset = currentWeekOffset + direction;
     loadWeeklyWaste(newOffset);
 }
+
+// oct 14, creates a chart
+
+ let wasteChart = null; // Global variable to store chart instance
+
+ function createWasteChart(weeklyData) {
+     const ctx = document.getElementById('wasteChart');
+     if (!ctx) {
+         console.error('Chart canvas not found');
+         return;
+     }
+     
+     // Calculate waste counts per day
+     const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+     const counts = daysOfWeek.map(day => {
+         return weeklyData.days[day] ? weeklyData.days[day].length : 0;
+     });
+     
+     // Destroy existing chart if it exists
+     if (wasteChart) {
+         wasteChart.destroy();
+     }
+     
+     // Create new chart
+     wasteChart = new Chart(ctx, {
+         type: 'bar',
+         data: {
+             labels: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+             datasets: [{
+                 label: 'Waste',
+                 data: counts,
+                 backgroundColor: '#3b82f6',
+                 borderColor: '#1e40af',
+                 borderWidth: 3
+             }]
+         },
+         options: {
+             responsive: true,
+             maintainAspectRatio: true,
+             scales: {
+                 y: {
+                     beginAtZero: true,
+                     ticks: {
+                         stepSize: 1,
+                         font: {
+                             family: "'Press Start 2P', monospace",
+                             size: 10
+                         }
+                     }
+                 },
+                 x: {
+                     ticks: {
+                         font: {
+                             family: "'Press Start 2P', monospace",
+                             size: 10
+                         }
+                     }
+                 }
+             },
+             plugins: {
+                 legend: {
+                     display: true,
+                     labels: {
+                         font: {
+                             family: "'Press Start 2P', monospace",
+                             size: 12
+                         }
+                     }
+                 }
+             }
+         }
+     });
+ }

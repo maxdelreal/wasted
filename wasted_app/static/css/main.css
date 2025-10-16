@@ -498,3 +498,24 @@ body {
 .week-navigation .btn {
     white-space: nowrap;
 }
+
+/* Overview content layout */
+.overview-content {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.overview-content .scrollable-list {
+    flex: 1;
+    min-width: 300px;
+}
+
+.chart-container {
+    flex: 1;
+    min-width: 400px;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border: 3px solid #1e3a8a;
+}

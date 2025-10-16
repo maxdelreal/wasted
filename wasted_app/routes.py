@@ -161,3 +161,38 @@ def get_weekly_waste():
         'week_end': week_end.strftime('%m/%d/%Y'),
         'days': grouped_entries
     })
+
+# method of populating entries data for chart analysis
+# use fetch('/api/dev/populate-week', {method: 'POST'}).then(r => r.json()).then(console.log)
+@main.route('/api/dev/populate-week', methods=['POST'])
+@login_required
+def populate_test_week():
+    """Developer endpoint to populate current week with test data"""
+    from datetime import timedelta
+    
+    today = date.today()
+    days_since_monday = today.weekday()
+    monday = today - timedelta(days=days_since_monday)
+    
+    test_data = [
+        (0, ["MONDAY COFFEE", "MONDAY WRAPPER"]),
+        # leaving out tuesday since I'm writing this on tuesday but 
+        # (1, ["TUESDAY EGG", TUESDAY TOWEL"]),
+        (2, ["WEDNESDAY CUP", "WEDNESDAY BOTTLE"]),
+        (3, ["THURSDAY SNACK"]),
+        (4, ["FRIDAY LUNCH", "FRIDAY CAN", "FRIDAY WRAPPER"]),
+        (5, ["SATURDAY JUICE"]),
+    ]
+    
+    for day_offset, items in test_data:
+        target_date = monday + timedelta(days=day_offset)
+        for item in items:
+            entry = WasteEntry(
+                item_name=item,
+                user_id=current_user.id,
+                date_created=target_date
+            )
+            db.session.add(entry)
+    
+    db.session.commit()
+    return jsonify({"message": "Test week populated!"})

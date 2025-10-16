@@ -77,8 +77,14 @@
                         <button class="btn btn-primary" onclick="navigateWeek(1)">NEXT WEEK →</button>
                     </div>
                     
-                    <div class="scrollable-list" id="allWasteList">
-                        <div class="empty-state">No waste entries yet</div>
+                    <div class="overview-content">
+                        <div class="scrollable-list" id="allWasteList">
+                            <div class="empty-state">No waste entries yet</div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <canvas id="wasteChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,6 +95,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
